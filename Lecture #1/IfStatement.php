@@ -2,18 +2,38 @@
 
 class IfStatement
 {
-    public function checkIf()
+    public function incorrect()
     {
-        $variable = 0;
-        $result = '';
-        if ($variable > 0) {
-            $result = '$variable > 0';
-        } elseif($variable < 0) {
-            $result = '$variable < 0';
+        if ($transfer->getIdProductAbstract()) {
+            $priceTransfer->setFkProductAbstract($transfer->getIdProductAbstract());
         } else {
-            $result = '$variable = 0';
+            $priceTransfer->setFkProduct($transfer->getIdProduct());
+            return $this->setProduct(
+                $transfer,
+                $priceTransfer
+            );
+        }
+    }
+
+    protected function setProduct($transfer, $priceTransfer)
+    {
+        if ($transfer->getIdProduct()) {
+            return $priceTransfer->setFkProduct($transfer->getIdProduct());
         }
 
-        return $result;
+        return $priceTransfer->setFkProductAbstract($transfer->getIdProductAbstract());
+    }
+
+    public function correct()
+    {
+        if ($transfer->getIdProduct()) {
+            $priceTransfer->setFkProduct($transfer->getIdProduct());
+            return $priceTransfer;
+        }
+
+        $priceTransfer->setFkProductAbstract($transfer->getIdProductAbstract());
+
+        return $priceTransfer;
     }
 }
+
